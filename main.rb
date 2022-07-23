@@ -37,6 +37,12 @@ class Game
     false
   end
 
+  def tie?
+    return false if @board.any? { |arr| arr.include?(' ') }
+
+    true
+  end
+
   def get_location(player)
     loop do
       location = []
@@ -212,16 +218,22 @@ gets.chomp
 puts 'Remember: these are the cells:'
 puts game.show_friendly_board
 
-until game.winner?
+until game.winner? || game.tie?
   puts "\nTurn #{game.round}!"
   game.get_location(goes_first)
   if game.winner?
     puts "\n#{goes_first.name} won! YEYYYYY"
     break
+  elsif game.tie?
+    puts 'It\'s a tie!'
+    break
   end
   game.get_location(goes_second)
   if game.winner?
     puts "\n#{goes_second.name} won! YEYYYYY"
+    break
+  elsif game.tie?
+    puts "\nIt's a tie!"
     break
   end
   puts "\nAnother turn!"
